@@ -34,6 +34,7 @@ class SubmissionUploadService
 
     public function __construct(
         protected StudentFilenameParser $filenameParser,
+        protected SubmissionStudentResolver $studentResolver,
     ) {}
 
     /**
@@ -129,10 +130,16 @@ class SubmissionUploadService
             return Student::query()->findOrFail($options['student_id']);
         }
 
+        if ($options['identify_from_document'] ?? true) {
+            return $this->studentResolver->createPlaceholderStudent(
+                $parsed['name'] ?: ($parsed['original'] ?? 'Pending identification'),
+            );
+        }
+
         $nim = $options['nim'] ?? $parsed['nim'] ?? null;
         if (! $nim) {
             throw new InvalidArgumentException(
-                'Unable to resolve student NIM from filename. Expected pattern like 230101001_Name.pdf'
+                'Unable to resolve student NIM. Enable identify_from_document or provide student_id / NIM in filename.'
             );
         }
 

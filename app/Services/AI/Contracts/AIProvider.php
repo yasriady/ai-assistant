@@ -43,4 +43,12 @@ interface AIProvider
      * @return array<string, mixed>
      */
     public function generateRpsDraft(array $payload): array;
+
+    /**
+     * Extract student NIM and name from a document cover page / header.
+     *
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    public function extractStudentIdentity(array $payload): array;
 }

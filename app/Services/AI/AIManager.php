@@ -100,6 +100,16 @@ class AIManager
     }
 
     /**
+     * @param  array<string, mixed>  $payload
+     * @param  array<string, mixed>  $context
+     * @return array<string, mixed>
+     */
+    public function extractStudentIdentity(array $payload, array $context = []): array
+    {
+        return $this->execute('extractStudentIdentity', $payload, $context, validate: false);
+    }
+
+    /**
      * Estimated spend for the current calendar month.
      */
     public function monthlySpend(?int $userId = null): float

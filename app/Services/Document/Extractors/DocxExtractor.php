@@ -49,22 +49,32 @@ class DocxExtractor implements ExtractorInterface
 
         foreach ($container->getElements() as $element) {
             if ($element instanceof Text || $element instanceof Title) {
-                $parts[] = (string) $element->getText();
+                $parts[] = $this->normalizeText($element->getText());
             } elseif ($element instanceof TextRun) {
-                $parts[] = $element->getText();
+                $parts[] = $this->extractFromContainer($element);
             } elseif ($element instanceof AbstractContainer) {
                 $parts[] = $this->extractFromContainer($element);
             } elseif (method_exists($element, 'getElements')) {
                 /** @var AbstractContainer $element */
                 $parts[] = $this->extractFromContainer($element);
             } elseif (method_exists($element, 'getText')) {
-                $text = $element->getText();
-                if (is_string($text)) {
-                    $parts[] = $text;
-                }
+                $parts[] = $this->normalizeText($element->getText());
             }
         }
 
         return implode("\n", array_filter(array_map('trim', $parts)));
+    }
+
+    protected function normalizeText(mixed $text): string
+    {
+        if ($text instanceof TextRun) {
+            return $this->extractFromContainer($text);
+        }
+
+        if (is_string($text) || is_numeric($text)) {
+            return (string) $text;
+        }
+
+        return '';
     }
 }

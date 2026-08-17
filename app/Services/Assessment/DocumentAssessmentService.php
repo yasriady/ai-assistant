@@ -20,6 +20,7 @@ class DocumentAssessmentService
         protected DocumentExtractorManager $extractors,
         protected AIManager $ai,
         protected RubricScoringService $rubricScoring,
+        protected SubmissionStudentResolver $studentResolver,
     ) {}
 
     /**
@@ -63,7 +64,9 @@ class DocumentAssessmentService
             'status' => SubmissionStatus::Processing,
         ]);
 
-        return $submission->fresh(['files']);
+        return $this->studentResolver->resolve(
+            $submission->fresh(['files', 'student', 'assessment.course'])
+        );
     }
 
     /**

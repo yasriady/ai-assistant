@@ -7,27 +7,14 @@ use App\Models\CplOutcome;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 #[Title('CPL')]
 class Index extends Component
 {
-    use WithPagination;
-
     public string $search = '';
 
     public string $category = '';
-
-    public function updatingSearch(): void
-    {
-        $this->resetPage();
-    }
-
-    public function updatingCategory(): void
-    {
-        $this->resetPage();
-    }
 
     public function render()
     {
@@ -42,7 +29,7 @@ class Index extends Component
             })
             ->when($this->category !== '', fn ($q) => $q->where('category', $this->category))
             ->orderBy('order_index')
-            ->paginate(20);
+            ->get();
 
         return view('livewire.cpls.index', [
             'outcomes' => $outcomes,

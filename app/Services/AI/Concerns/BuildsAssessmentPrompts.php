@@ -121,6 +121,52 @@ PROMPT;
     /**
      * @param  array<string, mixed>  $payload
      */
+    protected function studentIdentityUserPrompt(array $payload): string
+    {
+        $documentText = $payload['document_text'] ?? $payload['text'] ?? '';
+
+        return <<<PROMPT
+Read the student identity from this academic submission (cover page, title page, or header only).
+
+Rules:
+1. Extract NIM / student ID and full name ONLY if explicitly written in the document.
+2. Do not guess from filename or invent values.
+3. If a field is missing, return null for that field.
+
+Document text (excerpt):
+\"\"\"
+{$documentText}
+\"\"\"
+
+Return JSON:
+{
+  "nim": "<student ID or null>",
+  "name": "<full name or null>",
+  "confidence": <0-1 number>,
+  "evidence": "<short quote showing NIM/name or empty>"
+}
+PROMPT;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function normalizeStudentIdentityResult(array $data, array $meta = []): array
+    {
+        $nim = trim((string) ($data['nim'] ?? ''));
+        $name = trim((string) ($data['name'] ?? ''));
+
+        return array_merge([
+            'nim' => $nim !== '' ? $nim : null,
+            'name' => $name !== '' ? $name : null,
+            'confidence' => (float) ($data['confidence'] ?? 0),
+            'evidence' => (string) ($data['evidence'] ?? ''),
+        ], $meta);
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
     protected function analyzeQuestionUserPrompt(array $payload): string
     {
         $question = $payload['question_text'] ?? '';

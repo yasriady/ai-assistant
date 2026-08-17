@@ -33,7 +33,7 @@ class Form extends Component
         if ($questionBank?->exists) {
             $this->authorize('update', $questionBank);
             $this->questionBank = $questionBank;
-            $this->fill($questionBank->only(['course_id', 'name', 'description', 'purpose']));
+            $this->fill($questionBank->only(['course_id', 'name', 'description']));
             $this->purpose = $questionBank->purpose?->value;
         } else {
             $this->authorize('create', QuestionBank::class);

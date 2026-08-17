@@ -31,10 +31,10 @@ class ExtractDocumentTextJob implements ShouldQueue
 
         $submission->update(['status' => SubmissionStatus::Processing]);
 
-        $documents->extract($submission);
+        $submission = $documents->extract($submission);
 
         if ($this->chainAssess) {
-            AssessDocumentJob::dispatch($this->submissionId);
+            AssessDocumentJob::dispatch($submission->id);
         }
     }
 

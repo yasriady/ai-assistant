@@ -329,8 +329,9 @@ return [
 
     'upload' => [
         'title' => 'Upload submissions',
-        'hint' => 'Upload PDF, DOCX, or TXT. Filename should start with student ID (NIM), e.g. 230101001_Name.pdf',
-        'naming_hint' => 'Filename format: NIM_name.pdf or just NIM.pdf',
+        'hint' => 'Upload PDF, DOCX, or TXT. Any filename is fine — student ID and name are read from the document content.',
+        'naming_hint' => 'Any filename is accepted. Student ID and name are detected automatically from the title/cover page after processing.',
+        'pending_student' => 'Pending identification — :file',
         'choose_files' => 'Choose files',
         'start' => 'Start processing',
         'files' => 'Files',

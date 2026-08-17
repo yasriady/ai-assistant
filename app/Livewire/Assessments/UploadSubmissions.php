@@ -4,13 +4,13 @@ namespace App\Livewire\Assessments;
 
 use App\Enums\JobProcessStatus;
 use App\Enums\SubmissionStatus;
+use App\Jobs\ExtractDocumentTextJob;
 use App\Models\Assessment;
-use App\Models\Student;
 use App\Models\Submission;
 use App\Models\SubmissionFile;
+use App\Services\Assessment\SubmissionStudentResolver;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -45,41 +45,30 @@ class UploadSubmissions extends Component
         ];
     }
 
-    public function save(): void
+    public function save(SubmissionStudentResolver $studentResolver): void
     {
         $this->validate();
         $this->authorize('update', $this->assessment);
 
         $uploaded = 0;
+        /** @var list<int> */
+        $submissionIds = [];
 
-        DB::transaction(function () use (&$uploaded): void {
+        DB::transaction(function () use (&$uploaded, &$submissionIds, $studentResolver): void {
             foreach ($this->files as $file) {
                 $original = $file->getClientOriginalName();
-                $nim = $this->extractNim($original);
-                $student = null;
 
-                if ($nim) {
-                    $student = Student::query()->where('nim', $nim)->first();
-                }
-
-                if (! $student) {
-                    $student = Student::query()->firstOrCreate(
-                        ['nim' => $nim ?: 'UNK-'.Str::upper(Str::random(6))],
-                        ['name' => pathinfo($original, PATHINFO_FILENAME)],
-                    );
-
-                    $this->assessment->course->students()->syncWithoutDetaching([$student->id]);
-                }
-
-                $submission = Submission::query()->firstOrCreate(
-                    [
-                        'assessment_id' => $this->assessment->id,
-                        'student_id' => $student->id,
-                    ],
-                    [
-                        'status' => SubmissionStatus::Uploaded,
-                    ],
+                $student = $studentResolver->createPlaceholderStudent(
+                    __('ui.upload.pending_student', ['file' => $original]),
                 );
+
+                $this->assessment->course->students()->syncWithoutDetaching([$student->id]);
+
+                $submission = Submission::query()->create([
+                    'assessment_id' => $this->assessment->id,
+                    'student_id' => $student->id,
+                    'status' => SubmissionStatus::Uploaded,
+                ]);
 
                 $path = $file->store('submissions/'.$this->assessment->id, config('filesystems.submission_disk', 'private'));
 
@@ -93,25 +82,18 @@ class UploadSubmissions extends Component
                     'extraction_status' => JobProcessStatus::Pending,
                 ]);
 
-                $submission->update(['status' => SubmissionStatus::Uploaded]);
+                $submissionIds[] = $submission->id;
                 $uploaded++;
             }
         });
 
+        foreach (array_unique($submissionIds) as $submissionId) {
+            ExtractDocumentTextJob::dispatch($submissionId);
+        }
+
         session()->flash('success', __('ui.flash.files_uploaded', ['count' => $uploaded]));
         $this->reset('files');
         $this->redirect(route('assessments.show', $this->assessment), navigate: true);
-    }
-
-    private function extractNim(string $filename): ?string
-    {
-        $base = pathinfo($filename, PATHINFO_FILENAME);
-
-        if (preg_match('/^([A-Za-z0-9\-\.]+)/', $base, $matches)) {
-            return $matches[1];
-        }
-
-        return null;
     }
 
     public function render()

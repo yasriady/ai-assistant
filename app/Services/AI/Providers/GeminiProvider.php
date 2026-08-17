@@ -70,6 +70,16 @@ class GeminiProvider implements AIProvider
         return array_merge($result, $this->usageMeta($result));
     }
 
+    public function extractStudentIdentity(array $payload): array
+    {
+        $result = $this->generateJson(
+            $this->antiHallucinationSystemPrompt(),
+            $this->studentIdentityUserPrompt($payload),
+        );
+
+        return $this->normalizeStudentIdentityResult($result, $this->usageMeta($result));
+    }
+
     /**
      * @return array<string, mixed>
      */

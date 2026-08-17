@@ -5,6 +5,7 @@ namespace App\Services\AI;
 use App\Services\AI\Concerns\BuildsAssessmentPrompts;
 use App\Services\Rps\Concerns\BuildsRpsPrompts;
 use App\Services\AI\Contracts\AIProvider;
+use App\Services\Assessment\StudentDocumentIdentityExtractor;
 
 /**
  * Deterministic mock provider for tests and demos when no API key is available.
@@ -252,6 +253,25 @@ class NullAIProvider implements AIProvider
             '_tokens_input' => 256,
             '_tokens_output' => 512,
         ];
+    }
+
+    public function extractStudentIdentity(array $payload): array
+    {
+        $text = (string) ($payload['document_text'] ?? $payload['text'] ?? '');
+        $identity = (new StudentDocumentIdentityExtractor)->extract($text);
+
+        return $this->normalizeStudentIdentityResult([
+            'nim' => $identity['nim'],
+            'name' => $identity['name'],
+            'confidence' => $identity['confidence'],
+            'evidence' => $identity['nim'] || $identity['name'] ? 'Extracted from document header (mock provider).' : '',
+        ], [
+            '_provider' => 'null',
+            '_model' => config('ai.providers.null.model', 'null-mock'),
+            '_raw' => ['mock' => true],
+            '_tokens_input' => max(1, (int) ceil(mb_strlen($text) / 4)),
+            '_tokens_output' => 32,
+        ]);
     }
 
     /**

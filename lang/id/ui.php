@@ -329,8 +329,9 @@ return [
 
     'upload' => [
         'title' => 'Unggah pengumpulan',
-        'hint' => 'Unggah PDF, DOCX, atau TXT. Nama file sebaiknya diawali NIM, contoh: 230101001_Nama.pdf',
-        'naming_hint' => 'Format nama file: NIM_nama.pdf atau cukup NIM.pdf',
+        'hint' => 'Unggah PDF, DOCX, atau TXT. Nama file bebas — NIM dan nama mahasiswa dibaca otomatis dari isi dokumen.',
+        'naming_hint' => 'Nama file bebas. NIM dan nama mahasiswa akan dibaca otomatis dari halaman judul / cover laporan setelah dokumen diproses.',
+        'pending_student' => 'Menunggu identifikasi — :file',
         'choose_files' => 'Pilih file',
         'start' => 'Mulai proses',
         'files' => 'File',

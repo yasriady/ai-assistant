@@ -70,6 +70,16 @@ class OpenAIProvider implements AIProvider
         return array_merge($result, $this->usageMeta($result));
     }
 
+    public function extractStudentIdentity(array $payload): array
+    {
+        $result = $this->chatJson(
+            $this->antiHallucinationSystemPrompt(),
+            $this->studentIdentityUserPrompt($payload),
+        );
+
+        return $this->normalizeStudentIdentityResult($result, $this->usageMeta($result));
+    }
+
     /**
      * @return array<string, mixed>
      */
