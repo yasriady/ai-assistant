@@ -46,15 +46,15 @@ class NullAIProvider implements AIProvider
                 'name' => $name,
                 'score' => $score,
                 'max_score' => round($criterionMax, 2),
-                'evidence' => $snippet !== '' ? $snippet : '[insufficient evidence in extracted text]',
+                'evidence' => $snippet !== '' ? $snippet : '[bukti tidak cukup dalam teks yang diekstrak]',
                 'reasoning' => sprintf(
-                    'Deterministic mock score based on text length (%d chars) and keyword coverage for "%s".',
+                    'Skor mock deterministik berdasarkan panjang teks (%d karakter) dan cakupan kata kunci untuk "%s".',
                     mb_strlen($text),
                     $name
                 ),
                 'feedback' => $ratio >= 0.7
-                    ? "Strong coverage for {$name}. Expand examples where possible."
-                    : "Strengthen {$name} with clearer explanations and supporting detail.",
+                    ? "Cakupan {$name} cukup baik. Tambahkan contoh jika memungkinkan."
+                    : "Perkuat {$name} dengan penjelasan yang lebih jelas dan detail pendukung.",
                 'insufficient_evidence' => $snippet === '',
             ];
 
@@ -74,7 +74,7 @@ class NullAIProvider implements AIProvider
             'score' => round($scaledScore, 2),
             'max_score' => round($maxScore, 2),
             'criteria' => $criteria,
-            'overall_feedback' => 'Demo assessment (NullAIProvider): scores are heuristic and for demonstration only. Configure a real AI provider for production grading.',
+            'overall_feedback' => 'Penilaian demo (NullAIProvider): skor bersifat heuristik untuk demonstrasi. Konfigurasikan provider AI sungguhan untuk penilaian produksi.',
             'confidence' => round($confidence, 4),
         ], [
             '_provider' => 'null',
@@ -114,17 +114,17 @@ class NullAIProvider implements AIProvider
             'score' => $score,
             'max_score' => round($maxScore, 2),
             'criteria' => [[
-                'name' => 'Answer Quality',
+                'name' => 'Kualitas Jawaban',
                 'score' => $score,
                 'max_score' => round($maxScore, 2),
-                'evidence' => $snippet !== '' ? $snippet : '[no matching keywords found in answer]',
-                'reasoning' => 'Deterministic mock comparison against expected answer / key concepts.',
+                'evidence' => $snippet !== '' ? $snippet : '[tidak ada kata kunci yang cocok dalam jawaban]',
+                'reasoning' => 'Perbandingan mock deterministik terhadap jawaban diharapkan / konsep kunci.',
                 'feedback' => $ratio >= 0.7
-                    ? 'Answer covers key points. Add precision where needed.'
-                    : 'Answer misses several expected concepts. Review the marking guide.',
+                    ? 'Jawaban mencakup poin-poin kunci. Tambahkan ketepatan jika perlu.'
+                    : 'Jawaban melewatkan beberapa konsep yang diharapkan. Tinjau panduan penilaian.',
                 'insufficient_evidence' => $snippet === '',
             ]],
-            'overall_feedback' => 'Demo answer grade (NullAIProvider).',
+            'overall_feedback' => 'Penilaian jawaban demo (NullAIProvider).',
             'confidence' => round(min(0.9, 0.4 + $ratio * 0.5), 4),
         ], [
             '_provider' => 'null',
@@ -164,10 +164,10 @@ class NullAIProvider implements AIProvider
 
         return [
             'feedback' => $ratio >= 0.7
-                ? 'Good work overall. Review weaker criteria and refine supporting evidence.'
-                : 'Focus on strengthening core arguments and aligning responses with the rubric.',
-            'strengths' => $ratio >= 0.5 ? ['Addresses the main task'] : ['Attempt submitted'],
-            'improvements' => ['Add clearer evidence', 'Tighten structure'],
+                ? 'Secara keseluruhan cukup baik. Tinjau kriteria yang lemah dan perjelas bukti pendukung.'
+                : 'Fokus pada penguatan argumen inti dan selaraskan jawaban dengan rubrik.',
+            'strengths' => $ratio >= 0.5 ? ['Menjawab tugas utama'] : ['Pengumpulan sudah masuk'],
+            'improvements' => ['Tambahkan bukti yang lebih jelas', 'Perketat struktur tulisan'],
             'confidence' => 0.6,
             '_provider' => 'null',
             '_model' => config('ai.providers.null.model', 'null-mock'),

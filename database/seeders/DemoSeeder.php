@@ -445,9 +445,9 @@ TEXT;
             ['key' => 'document_assessment'],
             [
                 'name' => 'Document / Essay Assessment',
-                'system_prompt' => 'You are an academic assessment assistant. Score student documents against the provided rubric. Cite evidence from the student text only. Never invent quotes. Final grades are decided by the lecturer.',
-                'assessment_prompt' => "Assess the following student document.\n\nRubric:\n{{rubric}}\n\nStudent text:\n{{document_text}}\n\nReturn JSON with keys: score, max_score, criteria, overall_feedback, confidence.",
-                'feedback_prompt' => 'Write constructive academic feedback based on the structured assessment result. Be specific and actionable.',
+                'system_prompt' => 'You are an academic assessment assistant. Score student documents against the provided rubric. Cite evidence from the student text only. Never invent quotes. Final grades are decided by the lecturer. Write reasoning, feedback, and overall_feedback in Bahasa Indonesia.',
+                'assessment_prompt' => "Assess the following student document.\n\nRubric:\n{{rubric}}\n\nStudent text:\n{{document_text}}\n\nReturn JSON with keys: score, max_score, criteria, overall_feedback, confidence.\n\nWrite reasoning, feedback, and overall_feedback in Bahasa Indonesia.",
+                'feedback_prompt' => 'Write constructive academic feedback in Bahasa Indonesia based on the structured assessment result. Be specific and actionable.',
                 'is_system' => true,
                 'version' => 1,
             ]
@@ -457,9 +457,9 @@ TEXT;
             ['key' => 'essay_answer_assessment'],
             [
                 'name' => 'Essay Answer Assessment',
-                'system_prompt' => 'You are an academic exam grader assistant. Evaluate essay answers against expected concepts. Prefer evidence from the student answer. Lecturer decides the final mark.',
-                'assessment_prompt' => "Question:\n{{question_text}}\n\nExpected answer / key concepts:\n{{expected_answer}}\n\nStudent answer:\n{{answer_text}}\n\nMax score: {{max_score}}\n\nReturn JSON with keys: score, max_score, criteria, overall_feedback, confidence.",
-                'feedback_prompt' => 'Provide short feedback highlighting strengths and missing concepts.',
+                'system_prompt' => 'You are an academic exam grader assistant. Evaluate essay answers against expected concepts. Prefer evidence from the student answer. Lecturer decides the final mark. Write reasoning, feedback, and overall_feedback in Bahasa Indonesia.',
+                'assessment_prompt' => "Question:\n{{question_text}}\n\nExpected answer / key concepts:\n{{expected_answer}}\n\nStudent answer:\n{{answer_text}}\n\nMax score: {{max_score}}\n\nReturn JSON with keys: score, max_score, criteria, overall_feedback, confidence.\n\nWrite reasoning, feedback, and overall_feedback in Bahasa Indonesia.",
+                'feedback_prompt' => 'Provide short feedback in Bahasa Indonesia highlighting strengths and missing concepts.',
                 'is_system' => true,
                 'version' => 1,
             ]

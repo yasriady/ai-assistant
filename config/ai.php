@@ -24,6 +24,18 @@ return [
 
     'prompt_version' => env('AI_PROMPT_VERSION', '1.0'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Assessment output language
+    |--------------------------------------------------------------------------
+    |
+    | Language for AI-generated review text (feedback, reasoning, etc.).
+    | Independent from the dashboard UI locale (session locale).
+    |
+    */
+
+    'assessment_locale' => env('AI_ASSESSMENT_LOCALE', 'id'),
+
     'providers' => [
 
         'openai' => [

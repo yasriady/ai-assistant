@@ -16,7 +16,27 @@ Rules (mandatory):
 4. Do not invent student identity, course content, or external knowledge beyond what is needed to interpret the rubric.
 5. Respond with a single JSON object only. No markdown fences, no commentary.
 6. Confidence must be between 0 and 1 reflecting evidence quality and clarity.
-PROMPT;
+PROMPT
+            .$this->assessmentOutputLanguageRule();
+    }
+
+    protected function assessmentOutputLanguageRule(): string
+    {
+        return match ((string) config('ai.assessment_locale', 'id')) {
+            'id' => <<<'RULE'
+
+7. Language: Write ALL assessor-facing text in Bahasa Indonesia — including reasoning, feedback, and overall_feedback. Keep criterion names exactly as provided in the rubric JSON. Evidence quotes may stay in the student's original language.
+RULE,
+            default => '',
+        };
+    }
+
+    protected function assessmentOutputLanguageReminder(): string
+    {
+        return match ((string) config('ai.assessment_locale', 'id')) {
+            'id' => "\n\nPenting: Tulis reasoning, feedback, dan overall_feedback dalam Bahasa Indonesia.",
+            default => '',
+        };
     }
 
     /**
@@ -62,7 +82,8 @@ Return JSON with this schema:
   "overall_feedback": "<string>",
   "confidence": <0-1 number>
 }
-PROMPT;
+PROMPT
+            .$this->assessmentOutputLanguageReminder();
     }
 
     /**
@@ -115,7 +136,8 @@ Return JSON with this schema:
   "overall_feedback": "<string>",
   "confidence": <0-1 number>
 }
-PROMPT;
+PROMPT
+            .$this->assessmentOutputLanguageReminder();
     }
 
     /**
@@ -215,7 +237,8 @@ Return JSON:
   "improvements": ["..."],
   "confidence": <0-1 number>
 }
-PROMPT;
+PROMPT
+            .$this->assessmentOutputLanguageReminder();
     }
 
     /**
