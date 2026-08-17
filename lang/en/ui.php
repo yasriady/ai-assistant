@@ -14,6 +14,7 @@ return [
         'assessments' => 'Assessments',
         'question_bank' => 'Question Bank',
         'cpl' => 'CPL',
+        'settings' => 'Settings',
         'ai_settings' => 'AI Settings',
     ],
 
@@ -286,6 +287,20 @@ return [
             'approve' => 'Save to RPS',
             'regenerate' => 'Change input & regenerate',
             'midterm_invalid' => 'Midterm week must be less than total weeks.',
+        ],
+    ],
+
+    'settings' => [
+        'title' => 'Settings',
+        'subtitle' => 'Customize your application display preferences.',
+        'theme' => [
+            'title' => 'Color Theme',
+            'subtitle' => 'Choose the color scheme used throughout the application.',
+            'default' => 'Default',
+            'default_desc' => 'The current teal and slate appearance.',
+            'vivid' => 'Bold Colors',
+            'vivid_desc' => 'A professional palette of blue, green, orange, and red.',
+            'saved' => 'Color theme saved successfully.',
         ],
     ],
 

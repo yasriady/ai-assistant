@@ -25,6 +25,7 @@ class User extends Authenticatable
         'google_id',
         'avatar',
         'active_term_code',
+        'theme',
         'email_verified_at',
     ];
 

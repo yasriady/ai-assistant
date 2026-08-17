@@ -35,7 +35,8 @@
     --color-ink-950: #020617;
 }
 
-:root {
+:root,
+[data-theme='default'] {
     --app-bg: #f1f5f9;
     --app-surface: #ffffff;
     --app-border: #e2e8f0;
@@ -45,9 +46,87 @@
     --app-accent-soft: #ccfbf1;
 }
 
+/* Vivid theme — professional blue, green, orange, red palette */
+[data-theme='vivid'] {
+    --color-brand-50: #eff6ff;
+    --color-brand-100: #dbeafe;
+    --color-brand-200: #bfdbfe;
+    --color-brand-300: #93c5fd;
+    --color-brand-400: #60a5fa;
+    --color-brand-500: #3b82f6;
+    --color-brand-600: #2563eb;
+    --color-brand-700: #1d4ed8;
+    --color-brand-800: #1e40af;
+    --color-brand-900: #1e3a8a;
+    --color-brand-950: #172554;
+
+    --color-ink-50: #f5f7ff;
+    --color-ink-100: #eef2ff;
+    --color-ink-200: #c7d2fe;
+    --color-ink-300: #a5b4fc;
+    --color-ink-400: #818cf8;
+    --color-ink-500: #6366f1;
+    --color-ink-600: #4f46e5;
+    --color-ink-700: #4338ca;
+    --color-ink-800: #1e293b;
+    --color-ink-900: #0f172a;
+    --color-ink-950: #020617;
+
+    --app-bg: #eef2ff;
+    --app-surface: #ffffff;
+    --app-border: #c7d2fe;
+    --app-sidebar: #0c1929;
+    --app-sidebar-text: #bfdbfe;
+    --app-accent: #2563eb;
+    --app-accent-soft: #dbeafe;
+    --app-accent-green: #10b981;
+    --app-accent-orange: #f97316;
+    --app-accent-red: #ef4444;
+}
+
+[data-theme='vivid'] .theme-sidebar {
+    background: linear-gradient(180deg, #0c1929 0%, #0f2744 50%, #122d4d 100%) !important;
+}
+
+[data-theme='vivid'] .theme-sidebar-accent {
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb 0%, #10b981 35%, #f97316 65%, #ef4444 100%);
+}
+
+[data-theme='vivid'] .theme-sidebar-brand {
+    color: #93c5fd !important;
+}
+
+[data-theme='vivid'] .theme-header {
+    border-bottom-color: #c7d2fe !important;
+    background: rgba(255, 255, 255, 0.97) !important;
+}
+
+[data-theme='vivid'] .theme-body {
+    background-color: var(--app-bg) !important;
+}
+
+[data-theme='vivid'] .theme-nav-active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+}
+
+[data-theme='vivid'] .theme-btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+}
+
+[data-theme='vivid'] .theme-btn-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+}
+
 body {
     font-family: var(--font-sans);
     background: var(--app-bg);
+    color: var(--color-ink-900);
+}
+
+.theme-body {
+    background-color: var(--app-bg);
     color: var(--color-ink-900);
 }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\SubmissionFileController;
 use App\Http\Controllers\TermController;
+use App\Http\Controllers\ThemeController;
 use App\Livewire\Admin\AiSettings;
 use App\Livewire\Analytics\ExamAnalytics;
 use App\Livewire\Assessments\ExamBuilder;
@@ -26,6 +27,7 @@ use App\Livewire\QuestionBanks\Form as QuestionBankForm;
 use App\Livewire\QuestionBanks\Index as QuestionBanksIndex;
 use App\Livewire\QuestionBanks\QuestionForm;
 use App\Livewire\Rubrics\Form as RubricForm;
+use App\Livewire\Settings\Index as SettingsIndex;
 use App\Livewire\Rubrics\Index as RubricsIndex;
 use App\Livewire\Students\Form as StudentForm;
 use App\Livewire\Students\ImportCsv;
@@ -35,6 +37,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/locale/{locale}', LocaleController::class)
     ->whereIn('locale', ['id', 'en'])
     ->name('locale.switch');
+
+Route::get('/theme/{theme}', ThemeController::class)
+    ->whereIn('theme', ['default', 'vivid'])
+    ->middleware('auth')
+    ->name('theme.switch');
 
 Route::middleware('auth')->group(function (): void {
     Route::get('/term/{term}', TermController::class)
@@ -88,6 +95,8 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/question-banks/{questionBank}/edit', QuestionBankForm::class)->name('question-banks.edit');
     Route::get('/question-banks/{questionBank}/questions/create', QuestionForm::class)->name('question-banks.questions.create');
     Route::get('/question-banks/{questionBank}/questions/{question}/edit', QuestionForm::class)->name('question-banks.questions.edit');
+
+    Route::get('/settings', SettingsIndex::class)->name('settings');
 
     Route::get('/admin/ai-settings', AiSettings::class)
         ->middleware('role:admin')

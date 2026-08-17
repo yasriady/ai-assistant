@@ -14,6 +14,7 @@ return [
         'assessments' => 'Penilaian',
         'question_bank' => 'Bank Soal',
         'cpl' => 'CPL',
+        'settings' => 'Pengaturan',
         'ai_settings' => 'Pengaturan AI',
     ],
 
@@ -286,6 +287,20 @@ return [
             'approve' => 'Simpan ke RPS',
             'regenerate' => 'Ubah input & generate ulang',
             'midterm_invalid' => 'Minggu UTS harus lebih kecil dari total minggu.',
+        ],
+    ],
+
+    'settings' => [
+        'title' => 'Pengaturan',
+        'subtitle' => 'Sesuaikan preferensi tampilan aplikasi.',
+        'theme' => [
+            'title' => 'Tema Warna',
+            'subtitle' => 'Pilih skema warna yang digunakan di seluruh aplikasi.',
+            'default' => 'Default',
+            'default_desc' => 'Tampilan teal dan abu-abu yang saat ini digunakan.',
+            'vivid' => 'Warna Berani',
+            'vivid_desc' => 'Palet biru, hijau, orange, dan merah yang profesional dan energik.',
+            'saved' => 'Tema warna berhasil disimpan.',
         ],
     ],
 
